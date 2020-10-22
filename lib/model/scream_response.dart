@@ -1,32 +1,38 @@
+import 'dart:convert';
+
+ScreamResponse screamResponseFromJson(String str) => ScreamResponse.fromJson(json.decode(str));
+
+String screamResponseToJson(ScreamResponse data) => json.encode(data.toJson());
+
 class ScreamResponse {
   ScreamResponse({
+    this.commentCount,
+    this.userHandle,
     this.likeCount,
     this.createdAt,
-    this.userHandle,
     this.image,
-    this.commentCount,
     this.body,
     this.unlikeCount,
     this.screamId,
     this.comments,
   });
 
+  int commentCount;
+  String userHandle;
   int likeCount;
   DateTime createdAt;
-  String userHandle;
   String image;
-  int commentCount;
   String body;
   int unlikeCount;
   String screamId;
   List<Comment> comments;
 
   factory ScreamResponse.fromJson(Map<String, dynamic> json) => ScreamResponse(
+    commentCount: json["commentCount"],
+    userHandle: json["userHandle"],
     likeCount: json["likeCount"],
     createdAt: DateTime.parse(json["createdAt"]),
-    userHandle: json["userHandle"],
     image: json["image"],
-    commentCount: json["commentCount"],
     body: json["body"],
     unlikeCount: json["unlikeCount"],
     screamId: json["screamId"],
@@ -34,11 +40,11 @@ class ScreamResponse {
   );
 
   Map<String, dynamic> toJson() => {
+    "commentCount": commentCount,
+    "userHandle": userHandle,
     "likeCount": likeCount,
     "createdAt": createdAt.toIso8601String(),
-    "userHandle": userHandle,
     "image": image,
-    "commentCount": commentCount,
     "body": body,
     "unlikeCount": unlikeCount,
     "screamId": screamId,
@@ -49,27 +55,31 @@ class ScreamResponse {
 class Comment {
   Comment({
     this.screamId,
+    this.body,
+    this.imageUrl,
     this.userHandle,
     this.createdAt,
-    this.body,
   });
 
   String screamId;
+  String body;
+  String imageUrl;
   String userHandle;
   DateTime createdAt;
-  String body;
 
   factory Comment.fromJson(Map<String, dynamic> json) => Comment(
     screamId: json["screamId"],
+    body: json["body"],
+    imageUrl: json["imageUrl"],
     userHandle: json["userHandle"],
     createdAt: DateTime.parse(json["createdAt"]),
-    body: json["body"],
   );
 
   Map<String, dynamic> toJson() => {
     "screamId": screamId,
+    "body": body,
+    "imageUrl": imageUrl,
     "userHandle": userHandle,
     "createdAt": createdAt.toIso8601String(),
-    "body": body,
   };
 }
