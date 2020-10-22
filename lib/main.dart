@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:social_app/view/login.dart';
+import 'package:social_app/view/allScreamsBuilder.dart';
 
 main() => runApp(MyApp());
 
@@ -7,6 +7,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData.from(colorScheme: ColorScheme.light()),
       home: Home(),
     );
@@ -21,6 +22,9 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
-    return Login();
+    return Scaffold(
+        body:AllScreamsBuilder(),
+      appBar: AppBar(),
+    );
   }
 }
