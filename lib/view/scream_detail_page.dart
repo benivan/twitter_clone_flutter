@@ -111,20 +111,18 @@ class _BuildScreamState extends State<BuildScream> {
                   SizedBox(
                     height: 5,
                   ),
-                   Column(
-                      children: [
-                        for(int i = 0; i<lengthOfComments; i++)
-                          ListTile(leading: CircleAvatar(
-                            radius: 20,
-                            backgroundImage: NetworkImage(widget.scream.comments.elementAt(i).imageUrl),
-                          ),
-                            title: Text(widget.scream.comments.elementAt(i).userHandle),
-                            subtitle: Column(children: [
-                              Text(widget.scream.comments.elementAt(i).body)
-                            ],),
-                          )
-                      ],
+
+
+                  for(int i = 0; i<lengthOfComments; i++)
+                   ListTile(leading: CircleAvatar(
+                      radius: 20,
+                      backgroundImage: NetworkImage(widget.scream.comments.elementAt(i).imageUrl),
                     ),
+                      title: Text(widget.scream.comments.elementAt(i).userHandle),
+                      subtitle: Column(children: [
+                        Text(widget.scream.comments.elementAt(i).body)
+                      ],),
+                    )
 
             ])
 
