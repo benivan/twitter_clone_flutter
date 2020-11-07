@@ -4,6 +4,7 @@ import 'package:social_app/theme/theme_changer.dart';
 import 'package:social_app/view/allScreamsBuilder.dart';
 import 'package:social_app/view/login/login.dart';
 import 'package:provider/provider.dart';
+import 'package:social_app/view/login/register.dart';
 
 main() => runApp(MyApp());
 
@@ -28,27 +29,11 @@ class _HomeState extends State<Home> {
     ThemeChanger themeChanger =
         Provider.of<ThemeChanger>(context, listen: true);
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: Provider.of<ThemeChanger>(context, listen: true).getThemeData,
       home: Scaffold(
         body: LoginPage(),
-        appBar: AppBar(
-          actions: [
-            TextButton(
-                onPressed: () {
-                  ThemeData theme = themeChanger.getThemeData;
-                  if (theme == lightTheme){
-                    themeChanger.setThemeData(darkTheme);
-                  }
 
-                  else
-                    themeChanger.setThemeData(lightTheme);
-                },
-                child: Icon(Icons.stars_sharp,),
-            style:TextButton.styleFrom(primary: isLight(context) ? Colors.red : Colors.yellow),
-            )
-
-          ],
-        ),
       ),
     );
   }
