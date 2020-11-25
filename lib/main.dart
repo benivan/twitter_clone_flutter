@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:social_app/theme/theme.dart';
 import 'package:social_app/theme/theme_changer.dart';
-import 'package:social_app/view/allScreamsBuilder.dart';
+import 'file:///C:/Users/itsme/AndroidStudioProjects/social_app/lib/view/Home/allScreamsBuilder.dart';
 import 'package:social_app/view/login/login.dart';
 import 'package:provider/provider.dart';
 import 'package:social_app/view/login/register.dart';
+import 'package:social_app/view/sidebar/sidebar_layout.dart';
 
 main() => runApp(MyApp());
 
@@ -31,10 +32,8 @@ class _HomeState extends State<Home> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: Provider.of<ThemeChanger>(context, listen: true).getThemeData,
-      home: Scaffold(
-        body: LoginPage(),
-
-      ),
+      home:
+        Scaffold(body: SideBarLayout())
     );
   }
 }

@@ -4,7 +4,7 @@ import 'package:social_app/model/screams_response.dart';
 import 'package:social_app/repository/repository.dart';
 import 'package:social_app/theme/theme.dart';
 import 'package:social_app/theme/theme_changer.dart';
-import 'package:social_app/view/scream_detail_page.dart';
+import 'file:///C:/Users/itsme/AndroidStudioProjects/social_app/lib/view/Home/scream_detail_page.dart';
 
 class AllScreamsBuilder extends StatefulWidget {
   @override
@@ -60,102 +60,111 @@ class _ScreamBuildState extends State<ScreamBuild> {
   @override
   Widget build(BuildContext context) {
     ThemeChanger themeChanger = Provider.of<ThemeChanger>(context,listen: true);
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    Repository repository = Repository();
+
     return Scaffold(
       backgroundColor: isLight(context)? Colors.grey.shade200 :Colors.black87,
-      body: Scrollbar(
-          child: ListView(
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              padding: EdgeInsets.only(top:50),
-              physics: BouncingScrollPhysics(),
-              children: List.generate(widget.screams.length, (index) {
-                ScreamsResponse scream = widget.screams.elementAt(index);
-                return Stack(
-                  children: [
-                    Card(
-                      color: isLight(context)? Colors.white: Colors.grey.shade900.withOpacity(0.45),
-                      margin: EdgeInsets.fromLTRB(10, 0, 5, 3),
-                      elevation: 18,
-                      shadowColor: isLight(context) ? Colors.white.withOpacity(.5):Colors.black.withOpacity(0.1),
-                      borderOnForeground: true,
-                      child: ListTile(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      ScreamDetailPage(screamId: scream.screamId)));
-                        },
-                        title: Padding(
-                          padding: const EdgeInsets.only(bottom: 5),
-                          child: Text(
-                            scream.userHandle,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              scream.body,
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: isLight(context)? Colors.black87 :Colors.grey.shade200
-
+      drawer: Container(),
+      appBar: AppBar(),
+      body:
+          Scrollbar(
+              child: ListView(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  padding: EdgeInsets.only(top:10),
+                  physics: BouncingScrollPhysics(),
+                  children: List.generate(widget.screams.length, (index) {
+                    ScreamsResponse scream = widget.screams.elementAt(index);
+                    return Stack(
+                      children: [
+                        Card(
+                          color: isLight(context)? Colors.white: Colors.grey.shade900.withOpacity(0.45),
+                          margin: EdgeInsets.fromLTRB(10, 0, 5, 3),
+                          elevation: 18,
+                          shadowColor: isLight(context) ? Colors.white.withOpacity(.5):Colors.black.withOpacity(0.1),
+                          borderOnForeground: true,
+                          child: ListTile(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          ScreamDetailPage(screamId: scream.screamId)));
+                            },
+                            title: Padding(
+                              padding: const EdgeInsets.only(bottom: 5),
+                              child: Text(
+                                scream.userHandle,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Column(
-                                  children: [
-                                    IconButton(icon: Icon(Icons.thumb_up_alt_outlined),
-                                        color: isLight(context)? Colors.grey.shade800: Colors.grey,
-                                        onPressed: (){}),
-                                    Text(scream.likeCount.toString())
-                                  ],
+                                Text(
+                                  scream.body,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: isLight(context)? Colors.black87 :Colors.grey.shade200
+
+                                  ),
                                 ),
-                                Column(
-                                  children: [
-                                    IconButton(icon: Icon(Icons.thumb_down_alt_outlined),
-                                        color: isLight(context)? Colors.grey.shade800: Colors.grey,
-                                        onPressed:(){}),
-                                    Text(scream.unlikeCount.toString())
-                                  ],
+                                SizedBox(
+                                  height: 5,
                                 ),
-                                Column(
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    IconButton(icon: Icon(Icons.messenger_outline),
-                                        color: isLight(context)? Colors.grey.shade800: Colors.grey,
-                                        onPressed:(){}),
-                                    Text(scream.commentCount.toString())
+                                    Column(
+                                      children: [
+                                        IconButton(icon: Icon(Icons.thumb_up_alt_outlined),
+                                            color: isLight(context)? Colors.grey.shade800: Colors.grey,
+                                            onPressed: (){
+                                            }),
+                                        Text(scream.likeCount.toString())
+                                      ],
+                                    ),
+                                    Column(
+                                      children: [
+                                        IconButton(icon: Icon(Icons.thumb_down_alt_outlined),
+                                            color: isLight(context)? Colors.grey.shade800: Colors.grey,
+                                            onPressed:(){}),
+                                        Text(scream.unlikeCount.toString())
+                                      ],
+                                    ),
+                                    Column(
+                                      children: [
+                                        IconButton(icon: Icon(Icons.messenger_outline),
+                                            color: isLight(context)? Colors.grey.shade800: Colors.grey,
+                                            onPressed:(){}),
+                                        Text(scream.commentCount.toString())
+                                      ],
+                                    ),
                                   ],
-                                ),
+                                )
                               ],
-                            )
-                          ],
-                        ),
-                        contentPadding: EdgeInsets.all(5),
-                        isThreeLine: true,
-                        leading: Padding(
-                          padding: const EdgeInsets.fromLTRB(5, 5, 5, 0),
-                          child: CircleAvatar(
-                            radius: 25,
-                            backgroundImage: NetworkImage(scream.imageUrl),
+                            ),
+                            contentPadding: EdgeInsets.all(5),
+                            isThreeLine: true,
+                            leading: Padding(
+                              padding: const EdgeInsets.fromLTRB(5, 5, 5, 0),
+                              child: CircleAvatar(
+                                radius: 25,
+                                backgroundImage: NetworkImage(scream.imageUrl),
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                  ],
-                );
-              })
-          )
-      ),
+                      ],
+                    );
+                  })
+              )
+          ),
+
     );
   }
 }

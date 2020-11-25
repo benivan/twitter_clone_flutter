@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:social_app/shared/text_input_decoraion.dart';
 import 'package:social_app/theme/theme.dart';
 import 'package:social_app/theme/theme_changer.dart';
-import 'package:social_app/view/allScreamsBuilder.dart';
+import 'file:///C:/Users/itsme/AndroidStudioProjects/social_app/lib/view/Home/allScreamsBuilder.dart';
 import 'package:social_app/view/login/register.dart';
 
 class LoginPage extends StatefulWidget {
@@ -13,6 +13,15 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+
+
+  @override
+  void initState() {
+    super.initState();
+
+  }
+
+
   @override
   Widget build(BuildContext context) {
     ThemeChanger themeChanger =
@@ -22,8 +31,6 @@ class _LoginPageState extends State<LoginPage> {
     var height = MediaQuery.of(context).size.height;
     final _formkey =GlobalKey<FormState>();
 
-String email;
-String password;
 
     return Scaffold(
       body: Container(
@@ -97,8 +104,13 @@ String password;
 
                       onChanged: (val){
                         setState(() {
-                          email = val;
+
                         });
+                      },
+                      validator: (val){
+                        if(val.isEmpty)
+                          return "Please Enter Email";
+                        return null;
                       },
                     ),
                   ),
@@ -106,12 +118,16 @@ String password;
                     padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
                     child: TextFormField(
                       decoration: textInputDecorationForPassword(isLight(context)),
-
                       onChanged: (val){
                         setState(() {
-                          password = val;
+
                         });
                       },
+                      validator: (val){
+                        if(val.isEmpty)
+                          return 'Please Enter Password ';
+                        return null;
+                        },
                     ),
                   ),
                 ],
@@ -158,7 +174,7 @@ String password;
                   color: isLight(context) ? Color(0xff3655B5) : Colors.black,
                   padding: EdgeInsets.all(18.0),
                   onPressed: () {
-                   return AllScreamsBuilder();
+
                   },
                   splashColor: Colors.blueGrey.withOpacity(0.4),
                   shape: CircleBorder(),
