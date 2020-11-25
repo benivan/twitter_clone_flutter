@@ -20,13 +20,12 @@ class ScreamDetailPage extends StatelessWidget {
                 return Center(child: CircularProgressIndicator());
               case ConnectionState.done:
                 if (snapshot.hasError) {
-                  print(snapshot.error); //Print Error
+                  print(snapshot.error);
                   print(screamId);
                   return Center(child: Text('${snapshot.error}'));
                 }
 
-                return Container(
-                    child: BuildScream(scream: snapshot.data));
+                return Container(child: BuildScream(scream: snapshot.data));
 
               case ConnectionState.none:
                 break;
@@ -52,19 +51,20 @@ class _BuildScreamState extends State<BuildScream> {
   @override
   Widget build(BuildContext context) {
     var lengthOfComments = widget.scream.comments.length;
-    return Container(
+    return SingleChildScrollView(
+      physics: BouncingScrollPhysics(),
       child: ListTile(
-          title: Padding(
-            padding: const EdgeInsets.only(bottom: 5, top: 5),
-            child: Text(widget.scream.userHandle),
+          title: Text(
+            widget.scream.userHandle,
+            style: TextStyle(fontSize: 20),
           ),
-          // contentPadding: EdgeInsets.all(5),
           leading: CircleAvatar(
             radius: 25,
             backgroundImage: NetworkImage(widget.scream.image),
           ),
           dense: true,
-          subtitle: Column(children: [
+          subtitle: Column(
+              children: [
             Text(
               widget.scream.body,
               style: TextStyle(
@@ -94,7 +94,10 @@ class _BuildScreamState extends State<BuildScream> {
                     label: Text(widget.scream.unlikeCount.toString())),
                 TextButton.icon(
                   onPressed: () {},
-                  icon: Icon(Icons.messenger_outline,color: Colors.orangeAccent,),
+                  icon: Icon(
+                    Icons.messenger_outline,
+                    color: Colors.orangeAccent,
+                  ),
                   label: Text(widget.scream.commentCount.toString()),
                 )
               ],
@@ -102,26 +105,25 @@ class _BuildScreamState extends State<BuildScream> {
             SizedBox(
               height: 5,
             ),
-          ]),
+          ]..add(allComments(lengthOfComments))),
           isThreeLine: true),
     );
   }
 
   Widget allComments(int length) {
-    return Flexible(
-      child: Column(
-        children: Iterable.generate(
-            length,
-            (i) => ListTile(
-                  leading: CircleAvatar(
-                    radius: 20,
-                    backgroundImage: NetworkImage(
-                        widget.scream.comments.elementAt(i).imageUrl),
-                  ),
-                  title: Text(widget.scream.comments.elementAt(i).userHandle),
-                  subtitle: Text(widget.scream.comments.elementAt(i).body),
-                )).toList(),
-      ),
+    return Column(
+      children: Iterable.generate(
+          length,
+          (index) => ListTile(
+                leading: CircleAvatar(
+                  radius: 20,
+                  backgroundImage: NetworkImage(
+                      widget.scream.comments.elementAt(index).imageUrl),
+                ),
+                title: Text(widget.scream.comments.elementAt(index).userHandle),
+                subtitle: Text(widget.scream.comments.elementAt(index).body),
+              )
+      ).toList(),
     );
   }
 }

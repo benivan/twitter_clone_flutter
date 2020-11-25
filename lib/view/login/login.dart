@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:social_app/shared/text_input_decoraion.dart';
 import 'package:social_app/theme/theme.dart';
 import 'package:social_app/theme/theme_changer.dart';
-import 'file:///C:/Users/itsme/AndroidStudioProjects/social_app/lib/view/Home/allScreamsBuilder.dart';
 import 'package:social_app/view/login/register.dart';
 
 class LoginPage extends StatefulWidget {
@@ -13,24 +12,19 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
-
   @override
   void initState() {
     super.initState();
-
   }
-
 
   @override
   Widget build(BuildContext context) {
     ThemeChanger themeChanger =
-    Provider.of<ThemeChanger>(context, listen: true);
+        Provider.of<ThemeChanger>(context, listen: true);
 
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
-    final _formkey =GlobalKey<FormState>();
-
+    final _formkey = GlobalKey<FormState>();
 
     return Scaffold(
       body: Container(
@@ -57,42 +51,44 @@ class _LoginPageState extends State<LoginPage> {
                 height: height,
                 decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color:
-                        isLight(context) ? Colors.black12 : Colors.grey.shade900),
+                    color: isLight(context)
+                        ? Colors.black12
+                        : Colors.grey.shade900),
               ),
             ),
             Align(
               alignment: Alignment.topCenter,
-              child:Padding(
+              child: Padding(
                 padding: EdgeInsets.only(top: 50),
-                child: Text("Login",
-                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),),
+                child: Text(
+                  "Login",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                ),
               ),
             ),
             Align(
               alignment: Alignment.topLeft,
-
               child: Padding(
-                padding: const EdgeInsets.only(top:20,),
+                padding: const EdgeInsets.only(
+                  top: 20,
+                ),
                 child: MaterialButton(
                   elevation: 8,
                   child: Icon(Icons.settings),
-                  onPressed: (){
+                  onPressed: () {
                     ThemeData theme = themeChanger.getThemeData;
-                    if (theme == lightTheme){
+                    if (theme == lightTheme) {
                       themeChanger.setThemeData(darkTheme);
-                    }
-
-                    else
+                    } else
                       themeChanger.setThemeData(lightTheme);
                   },
                   shape: CircleBorder(side: BorderSide.none),
-                  color: isLight(context) ? Colors.amberAccent : Colors.pinkAccent,
+                  color:
+                      isLight(context) ? Colors.amberAccent : Colors.pinkAccent,
                   splashColor: Colors.grey,
                 ),
               ),
             ),
-
             Padding(
               padding: const EdgeInsets.only(top: 100),
               child: Column(
@@ -101,15 +97,11 @@ class _LoginPageState extends State<LoginPage> {
                     padding: const EdgeInsets.fromLTRB(20, 50, 20, 0),
                     child: TextFormField(
                       decoration: textInputDecorationForEmail(isLight(context)),
-
-                      onChanged: (val){
-                        setState(() {
-
-                        });
+                      onChanged: (val) {
+                        setState(() {});
                       },
-                      validator: (val){
-                        if(val.isEmpty)
-                          return "Please Enter Email";
+                      validator: (val) {
+                        if (val.isEmpty) return "Please Enter Email";
                         return null;
                       },
                     ),
@@ -117,17 +109,15 @@ class _LoginPageState extends State<LoginPage> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
                     child: TextFormField(
-                      decoration: textInputDecorationForPassword(isLight(context)),
-                      onChanged: (val){
-                        setState(() {
-
-                        });
+                      decoration:
+                          textInputDecorationForPassword(isLight(context)),
+                      onChanged: (val) {
+                        setState(() {});
                       },
-                      validator: (val){
-                        if(val.isEmpty)
-                          return 'Please Enter Password ';
+                      validator: (val) {
+                        if (val.isEmpty) return 'Please Enter Password ';
                         return null;
-                        },
+                      },
                     ),
                   ),
                 ],
@@ -135,19 +125,19 @@ class _LoginPageState extends State<LoginPage> {
             ),
             Align(
               alignment: Alignment.bottomLeft,
-
               child: Padding(
-                padding: const EdgeInsets.only(left: 100,bottom: 160),
+                padding: const EdgeInsets.only(left: 100, bottom: 160),
                 child: MaterialButton(
                   elevation: 8,
                   highlightElevation: 10,
                   child: Icon(Icons.person_add),
                   padding: EdgeInsets.all(18),
-                  onPressed: (){
+                  onPressed: () {
                     return Register();
                   },
                   shape: CircleBorder(),
-                  color: isLight(context) ? Colors.amberAccent : Colors.pinkAccent,
+                  color:
+                      isLight(context) ? Colors.amberAccent : Colors.pinkAccent,
                   splashColor: Colors.grey,
                 ),
               ),
@@ -173,9 +163,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   color: isLight(context) ? Color(0xff3655B5) : Colors.black,
                   padding: EdgeInsets.all(18.0),
-                  onPressed: () {
-
-                  },
+                  onPressed: () {},
                   splashColor: Colors.blueGrey.withOpacity(0.4),
                   shape: CircleBorder(),
                 ),

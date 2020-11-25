@@ -12,13 +12,12 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
-
     ThemeChanger themeChanger =
-    Provider.of<ThemeChanger>(context, listen: true);
+        Provider.of<ThemeChanger>(context, listen: true);
 
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
-    final _formkey =GlobalKey<FormState>();
+    final _formkey = GlobalKey<FormState>();
 
     String email;
     String password;
@@ -32,9 +31,9 @@ class _RegisterState extends State<Register> {
                   gradient: LinearGradient(
                       colors: isLight(context)
                           ? [
-                        Color(0xFFf4f5f7),
-                        Color(0xFFf4f5f7).withOpacity(0.5)
-                      ]
+                              Color(0xFFf4f5f7),
+                              Color(0xFFf4f5f7).withOpacity(0.5)
+                            ]
                           : [Colors.grey, Colors.grey.shade700],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight)),
@@ -48,25 +47,24 @@ class _RegisterState extends State<Register> {
                 height: height,
                 decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color:
-                    isLight(context) ? Colors.black12 : Colors.grey.shade900),
+                    color: isLight(context)
+                        ? Colors.black12
+                        : Colors.grey.shade900),
               ),
             ),
             Align(
               alignment: Alignment.topLeft,
-
               child: Padding(
-                padding: const EdgeInsets.only(top:20,),
+                padding: const EdgeInsets.only(
+                  top: 20,
+                ),
                 child: TextButton(
-
                   child: Icon(Icons.settings),
-                  onPressed: (){
+                  onPressed: () {
                     ThemeData theme = themeChanger.getThemeData;
-                    if (theme == lightTheme){
+                    if (theme == lightTheme) {
                       themeChanger.setThemeData(darkTheme);
-                    }
-
-                    else
+                    } else
                       themeChanger.setThemeData(lightTheme);
                   },
                   style: ButtonStyle(),
@@ -82,8 +80,7 @@ class _RegisterState extends State<Register> {
                     padding: const EdgeInsets.fromLTRB(20, 50, 20, 0),
                     child: TextFormField(
                       decoration: textInputDecorationForEmail(isLight(context)),
-
-                      onChanged: (val){
+                      onChanged: (val) {
                         setState(() {
                           email = val;
                         });
@@ -93,9 +90,9 @@ class _RegisterState extends State<Register> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
                     child: TextFormField(
-                      decoration: textInputDecorationForPassword(isLight(context)),
-
-                      onChanged: (val){
+                      decoration:
+                          textInputDecorationForPassword(isLight(context)),
+                      onChanged: (val) {
                         setState(() {
                           password = val;
                         });
@@ -107,18 +104,17 @@ class _RegisterState extends State<Register> {
             ),
             Align(
               alignment: Alignment.bottomLeft,
-
               child: Padding(
-                padding: const EdgeInsets.only(left: 100,bottom: 160),
+                padding: const EdgeInsets.only(left: 100, bottom: 160),
                 child: MaterialButton(
                   elevation: 8,
                   highlightElevation: 10,
                   child: Icon(Icons.person),
                   padding: EdgeInsets.all(18),
-                  onPressed: (){
-                  },
+                  onPressed: () {},
                   shape: CircleBorder(),
-                  color: isLight(context) ? Colors.amberAccent : Colors.pinkAccent,
+                  color:
+                      isLight(context) ? Colors.amberAccent : Colors.pinkAccent,
                   splashColor: Colors.grey,
                 ),
               ),

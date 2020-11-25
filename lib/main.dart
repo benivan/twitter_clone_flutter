@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:social_app/theme/theme.dart';
 import 'package:social_app/theme/theme_changer.dart';
-import 'file:///C:/Users/itsme/AndroidStudioProjects/social_app/lib/view/Home/allScreamsBuilder.dart';
 import 'package:social_app/view/login/login.dart';
 import 'package:provider/provider.dart';
 import 'package:social_app/view/login/register.dart';
