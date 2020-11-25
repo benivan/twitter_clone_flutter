@@ -51,79 +51,76 @@ class _BuildScreamState extends State<BuildScream> {
   @override
   Widget build(BuildContext context) {
     var lengthOfComments = widget.scream.comments.length;
-    return SingleChildScrollView(
-      physics: BouncingScrollPhysics(),
-      child: ListTile(
-          title: Text(
-            widget.scream.userHandle,
-            style: TextStyle(fontSize: 20),
+    return ListTile(
+      title: Text(
+        widget.scream.userHandle,
+        style: TextStyle(fontSize: 20),
+      ),
+      leading: CircleAvatar(
+        radius: 25,
+        backgroundImage: NetworkImage(widget.scream.image),
+      ),
+      dense: true,
+      subtitle: Column(
+          children: [
+        Text(
+          widget.scream.body,
+          style: TextStyle(
+            fontSize: 16,
+            color: Colors.black.withOpacity(.8),
           ),
-          leading: CircleAvatar(
-            radius: 25,
-            backgroundImage: NetworkImage(widget.scream.image),
-          ),
-          dense: true,
-          subtitle: Column(
-              children: [
-            Text(
-              widget.scream.body,
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.black.withOpacity(.8),
+        ),
+        SizedBox(
+          height: 5,
+        ),
+        Text(widget.scream.createdAt.toString()),
+        SizedBox(
+          height: 5,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            TextButton.icon(
+                onPressed: () {},
+                icon: Icon(
+                  Icons.thumb_up_alt_outlined,
+                ),
+                label: Text(widget.scream.likeCount.toString())),
+            TextButton.icon(
+                onPressed: () {},
+                icon: Icon(Icons.thumb_down_alt_outlined),
+                label: Text(widget.scream.unlikeCount.toString())),
+            TextButton.icon(
+              onPressed: () {},
+              icon: Icon(
+                Icons.messenger_outline,
+                color: Colors.orangeAccent,
               ),
+              label: Text(widget.scream.commentCount.toString()),
+            )
+          ],
+        ),
+        SizedBox(
+          height: 5,
+        ),
+        Expanded(
+          child: ListView.builder(
+            physics: BouncingScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: lengthOfComments,
+            itemBuilder: (context, index) => ListTile(
+              leading: CircleAvatar(
+                radius: 20,
+                backgroundImage: NetworkImage(
+                    widget.scream.comments.elementAt(index).imageUrl),
+              ),
+              title: Text(widget.scream.comments.elementAt(index).userHandle),
+              subtitle: Text(widget.scream.comments.elementAt(index).body),
             ),
-            SizedBox(
-              height: 5,
-            ),
-            Text(widget.scream.createdAt.toString()),
-            SizedBox(
-              height: 5,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                TextButton.icon(
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.thumb_up_alt_outlined,
-                    ),
-                    label: Text(widget.scream.likeCount.toString())),
-                TextButton.icon(
-                    onPressed: () {},
-                    icon: Icon(Icons.thumb_down_alt_outlined),
-                    label: Text(widget.scream.unlikeCount.toString())),
-                TextButton.icon(
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.messenger_outline,
-                    color: Colors.orangeAccent,
-                  ),
-                  label: Text(widget.scream.commentCount.toString()),
-                )
-              ],
-            ),
-            SizedBox(
-              height: 5,
-            ),
-          ]..add(allComments(lengthOfComments))),
-          isThreeLine: true),
+          ),
+        )
+      ]),
     );
   }
 
-  Widget allComments(int length) {
-    return Column(
-      children: Iterable.generate(
-          length,
-          (index) => ListTile(
-                leading: CircleAvatar(
-                  radius: 20,
-                  backgroundImage: NetworkImage(
-                      widget.scream.comments.elementAt(index).imageUrl),
-                ),
-                title: Text(widget.scream.comments.elementAt(index).userHandle),
-                subtitle: Text(widget.scream.comments.elementAt(index).body),
-              )
-      ).toList(),
-    );
-  }
 }
