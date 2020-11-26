@@ -33,6 +33,7 @@ dependencies:
   shared_preferences:
   sqflite:
   provider:
+  rxdart:
 
 dev_dependencies:
   flutter_test:

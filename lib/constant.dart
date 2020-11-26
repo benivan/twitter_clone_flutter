@@ -1,1 +1,2 @@
 const String backendUrl = "https://asia-south1-react-firebase-358ad.cloudfunctions.net/api";
+const myImage = "https://firebasestorage.googleapis.com/v0/b/react-firebase-358ad.appspot.com/o/46645052_216832599232706_1456962574498136064_n.jpg?alt=media&token=6a507720-854c-4f47-8d0b-19fd16499620";
