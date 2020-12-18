@@ -34,6 +34,10 @@ dependencies:
   sqflite:
   provider:
   rxdart:
+  flutter_stetho:
+    git:
+      url: git://github.com/jasonlewicki/flutter_stetho.git
+      ref: master
 
 dev_dependencies:
   flutter_test:

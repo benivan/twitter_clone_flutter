@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:social_app/model/scream_response.dart';
 import 'package:social_app/repository/repository.dart';
+import 'package:social_app/theme/theme.dart';
 
 class ScreamDetailPage extends StatelessWidget {
   final String screamId;
@@ -12,7 +13,7 @@ class ScreamDetailPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(),
       body: FutureBuilder<ScreamResponse>(
-          future: Repository().getScreamById(screamId: screamId),
+          future: Repository().fetchScreamById(screamId: screamId),
           builder:
               (BuildContext context, AsyncSnapshot<ScreamResponse> snapshot) {
             switch (snapshot.connectionState) {
@@ -25,7 +26,10 @@ class ScreamDetailPage extends StatelessWidget {
                   return Center(child: Text('${snapshot.error}'));
                 }
 
-                return Container(child: BuildScream(scream: snapshot.data));
+                return Container(child: BuildScream(scream: snapshot.data),
+                    // color: isLight(context)?Colors.grey.shade100:Colors.grey.shade900,
+                  color: isLight(context) ? Colors.grey.shade200 : Colors.black87,
+                );
 
               case ConnectionState.none:
                 break;
@@ -62,12 +66,12 @@ class _BuildScreamState extends State<BuildScream> {
       ),
       dense: true,
       subtitle: Column(
+        mainAxisSize: MainAxisSize.max,
           children: [
         Text(
           widget.scream.body,
           style: TextStyle(
             fontSize: 16,
-            color: Colors.black.withOpacity(.8),
           ),
         ),
         SizedBox(
@@ -80,24 +84,58 @@ class _BuildScreamState extends State<BuildScream> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            TextButton.icon(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.thumb_up_alt_outlined,
-                ),
-                label: Text(widget.scream.likeCount.toString())),
-            TextButton.icon(
-                onPressed: () {},
-                icon: Icon(Icons.thumb_down_alt_outlined),
-                label: Text(widget.scream.unlikeCount.toString())),
-            TextButton.icon(
-              onPressed: () {},
-              icon: Icon(
-                Icons.messenger_outline,
-                color: Colors.orangeAccent,
-              ),
-              label: Text(widget.scream.commentCount.toString()),
+            Column(
+              children: [
+                IconButton(
+                    icon:
+                    Icon(Icons.thumb_up_alt_outlined),
+                    color: isLight(context)
+                        ? Colors.grey.shade800
+                        : Colors.deepPurple.shade200,
+                    onPressed: () {}),
+                Text(widget.scream.likeCount.toString(),
+                style: TextStyle(
+                  color: isLight(context)
+                      ? Colors.grey.shade800
+                      : Colors.deepPurple.shade200,
+                ),)
+              ],
+            ),
+            Column(
+              children: [
+                IconButton(
+                    icon:
+                    Icon(Icons.thumb_down_alt_outlined),
+                    color: isLight(context)
+                        ? Colors.grey.shade800
+                        : Colors.deepPurple.shade200,
+                    onPressed: () {}),
+                Text(widget.scream.unlikeCount.toString(),
+                style: TextStyle(
+                  color: isLight(context)
+                      ? Colors.grey.shade800
+                      : Colors.deepPurple[200],
+                ),)
+              ],
+            ),
+            Column(
+              children: [
+                IconButton(
+                    icon:
+                    Icon(Icons.messenger_outline_outlined),
+                    color: isLight(context)
+                        ? Colors.grey.shade800
+                        : Colors.deepPurple.shade200,
+                    onPressed: () {}),
+                Text(widget.scream.commentCount.toString(),
+                style: TextStyle(
+                  color: isLight(context)
+                      ? Colors.grey.shade800
+                      : Colors.deepPurple[200],
+                ),)
+              ],
             )
+
           ],
         ),
         SizedBox(
@@ -108,14 +146,24 @@ class _BuildScreamState extends State<BuildScream> {
             physics: BouncingScrollPhysics(),
             shrinkWrap: true,
             itemCount: lengthOfComments,
-            itemBuilder: (context, index) => ListTile(
-              leading: CircleAvatar(
-                radius: 20,
-                backgroundImage: NetworkImage(
-                    widget.scream.comments.elementAt(index).imageUrl),
+            itemBuilder: (context, index) => Card(
+              color: isLight(context) ? Colors.white : Colors.grey.shade900.withOpacity(.45),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10)
               ),
-              title: Text(widget.scream.comments.elementAt(index).userHandle),
-              subtitle: Text(widget.scream.comments.elementAt(index).body),
+
+              child: Padding(
+                padding: EdgeInsets.all(8),
+                child: ListTile(
+                  leading: CircleAvatar(
+                    radius: 15,
+                    backgroundImage: NetworkImage(
+                        widget.scream.comments.elementAt(index).imageUrl),
+                  ),
+                  title: Text(widget.scream.comments.elementAt(index).userHandle),
+                  subtitle: Text(widget.scream.comments.elementAt(index).body),
+                ),
+              ),
             ),
           ),
         )

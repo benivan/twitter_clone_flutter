@@ -59,8 +59,10 @@ class Comment {
     this.imageUrl,
     this.userHandle,
     this.createdAt,
+    this.commentId,
   });
 
+  String commentId;
   String screamId;
   String body;
   String imageUrl;
@@ -68,6 +70,7 @@ class Comment {
   DateTime createdAt;
 
   factory Comment.fromJson(Map<String, dynamic> json) => Comment(
+    commentId: json["commentId"],
     screamId: json["screamId"],
     body: json["body"],
     imageUrl: json["imageUrl"],
@@ -76,6 +79,7 @@ class Comment {
   );
 
   Map<String, dynamic> toJson() => {
+    "commentId":commentId,
     "screamId": screamId,
     "body": body,
     "imageUrl": imageUrl,

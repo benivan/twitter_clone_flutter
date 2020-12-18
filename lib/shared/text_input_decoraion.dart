@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:social_app/theme/theme.dart';
 
- textInputDecorationForEmail (bool isLight) => InputDecoration(
+ textInputDecorationForEmail (bool isLight , String hint, String hintLable, IconData formIcon) => InputDecoration(
   // ####### Take A LOOK ######
   contentPadding: const EdgeInsets.only(
       left: 14.0, bottom: 8.0, top: 8.0),
@@ -22,12 +22,12 @@ import 'package:social_app/theme/theme.dart';
     borderRadius: BorderRadius.circular(25.7),
   ),
   icon: Icon(
-    Icons.person,
+    formIcon,
     color: isLight ? Colors.grey.shade900 : Colors.white,
   ),
-  hintText: 'Enter Your Email',
+  hintText: hint,
   hintStyle: TextStyle(color: Colors.grey),
-  labelText: 'Email',
+  labelText: hintLable,
   labelStyle: TextStyle(
     color: isLight ? Colors.grey.shade800:Colors.grey[200],
   ),
@@ -35,7 +35,7 @@ import 'package:social_app/theme/theme.dart';
   focusColor: Colors.white,
 );
 
-textInputDecorationForPassword(bool isLight) => InputDecoration(
+textInputDecorationForPassword(bool isLight, String hint, String lable, IconData formIcon) => InputDecoration(
 contentPadding: const EdgeInsets.only(
 left: 14.0, bottom: 8.0, top: 8.0),
 focusedBorder: OutlineInputBorder(
@@ -55,11 +55,11 @@ borderSide: BorderSide(color: Colors.redAccent),
 borderRadius: BorderRadius.circular(25.7),
 ),
 icon: Icon(
-Icons.vpn_key_sharp,
+formIcon,
 color: isLight ? Colors.grey.shade900 : Colors.white ,
 ),
-hintText: 'Enter Password',
-labelText: 'Password',
+hintText: hint,
+labelText: lable,
 hintStyle: TextStyle(color: Colors.grey),
 labelStyle: TextStyle(
 color:isLight ? Colors.grey.shade800: Colors.grey[200],
