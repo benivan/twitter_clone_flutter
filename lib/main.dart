@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_stetho/flutter_stetho.dart';
+import 'package:social_app/splash_screen.dart';
 import 'package:social_app/theme/theme.dart';
 import 'package:social_app/theme/theme_changer.dart';
+import 'package:social_app/view/Home/allScreamsBuilder.dart';
+import 'package:social_app/view/login/LoginPageView.dart';
 import 'package:social_app/view/login/login.dart';
 import 'package:provider/provider.dart';
 import 'package:social_app/view/login/register.dart';
 import 'package:social_app/view/sidebar/sidebar_layout.dart';
 
-main() => runApp(MyApp());
+main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  Stetho.initialize();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -29,10 +37,9 @@ class _HomeState extends State<Home> {
     ThemeChanger themeChanger =
         Provider.of<ThemeChanger>(context, listen: true);
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: Provider.of<ThemeChanger>(context, listen: true).getThemeData,
-      home:
-        Scaffold(body: SideBarLayout())
+        debugShowCheckedModeBanner: false,
+        theme: Provider.of<ThemeChanger>(context, listen: true).getThemeData,
+        home: SplashScreen()
     );
   }
 }

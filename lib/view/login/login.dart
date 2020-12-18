@@ -7,170 +7,120 @@ import 'package:social_app/theme/theme_changer.dart';
 import 'package:social_app/view/login/register.dart';
 
 class LoginPage extends StatefulWidget {
+
+  final VoidCallback onTextPressed;
+  final Function(String) emailTextChanged;
+  final Function(String) passwordChanged;
+  final Function(String) passwordValidator;
+
+
+  LoginPage({this.onTextPressed,this.emailTextChanged,this.passwordChanged, this.passwordValidator});
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
+
+
+
   @override
   void initState() {
     super.initState();
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+
+
+  @override
   Widget build(BuildContext context) {
     ThemeChanger themeChanger =
-        Provider.of<ThemeChanger>(context, listen: true);
+    Provider.of<ThemeChanger>(context, listen: true);
 
-    var width = MediaQuery.of(context).size.width;
-    var height = MediaQuery.of(context).size.height;
-    final _formkey = GlobalKey<FormState>();
-
-    return Scaffold(
-      body: Container(
-        child: Stack(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      colors: isLight(context)
-                          ? [
-                              Color(0xFFf4f5f7),
-                              Color(0xFFf4f5f7).withOpacity(0.5)
-                            ]
-                          : [Colors.grey, Colors.grey.shade700],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight)),
-            ),
-            Positioned(
-              left: -width,
-              top: -width,
-              right: -width,
-              child: Container(
-                width: height,
-                height: height,
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: isLight(context)
-                        ? Colors.black12
-                        : Colors.grey.shade900),
+    var width = MediaQuery
+        .of(context)
+        .size
+        .width;
+    var height = MediaQuery
+        .of(context)
+        .size
+        .height;
+    return Container(
+      color: Colors.transparent,
+      child: ListView(
+        children: [
+          Padding(
+            padding: EdgeInsets.only(top: height * 0.06),
+            child: Center(
+              child: Text(
+                "Login",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25,),
               ),
             ),
-            Align(
-              alignment: Alignment.topCenter,
-              child: Padding(
-                padding: EdgeInsets.only(top: 50),
-                child: Text(
-                  "Login",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                ),
-              ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 50, 20, 0),
+            child: TextFormField(
+              decoration: textInputDecorationForEmail(
+                  isLight(context), "Enter Your Email", "Email", Icons.person),
+              onChanged: widget.emailTextChanged,
+              validator: (val) {
+                if (val.isEmpty) return "Please Enter Email";
+                return null;
+              },
             ),
-            Align(
-              alignment: Alignment.topLeft,
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  top: 20,
-                ),
-                child: MaterialButton(
-                  elevation: 8,
-                  child: Icon(Icons.settings),
-                  onPressed: () {
-                    ThemeData theme = themeChanger.getThemeData;
-                    if (theme == lightTheme) {
-                      themeChanger.setThemeData(darkTheme);
-                    } else
-                      themeChanger.setThemeData(lightTheme);
-                  },
-                  shape: CircleBorder(side: BorderSide.none),
-                  color:
-                      isLight(context) ? Colors.amberAccent : Colors.pinkAccent,
-                  splashColor: Colors.grey,
-                ),
-              ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 50, 20, 0),
+            child: TextFormField(
+              decoration:
+              textInputDecorationForPassword(
+                  isLight(context), "Enter Password", "Password",
+                  Icons.vpn_key),
+              onChanged: widget.passwordChanged,
+              // validator: widget.passwordValidator,
+              validator: (val) {
+                if (val.isEmpty) return 'Please Enter Password ';
+                if (val.length < 6)
+                  return 'Please Enter 6 or more digit Password';
+                return null;
+              },
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 100),
-              child: Column(
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 120),
+            child: InkWell(
+              onTap: () {
+                widget.onTextPressed();
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 50, 20, 0),
-                    child: TextFormField(
-                      decoration: textInputDecorationForEmail(isLight(context)),
-                      onChanged: (val) {
-                        setState(() {});
-                      },
-                      validator: (val) {
-                        if (val.isEmpty) return "Please Enter Email";
-                        return null;
-                      },
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
-                    child: TextFormField(
-                      decoration:
-                          textInputDecorationForPassword(isLight(context)),
-                      onChanged: (val) {
-                        setState(() {});
-                      },
-                      validator: (val) {
-                        if (val.isEmpty) return 'Please Enter Password ';
-                        return null;
-                      },
-                    ),
-                  ),
+                  Text("Swipe to Register ", style: TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold),),
+                  Icon(Icons.arrow_forward_outlined, size: 25,)
                 ],
               ),
             ),
-            Align(
-              alignment: Alignment.bottomLeft,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 100, bottom: 160),
-                child: MaterialButton(
-                  elevation: 8,
-                  highlightElevation: 10,
-                  child: Icon(Icons.person_add),
-                  padding: EdgeInsets.all(18),
-                  onPressed: () {
-                    return Register();
-                  },
-                  shape: CircleBorder(),
-                  color:
-                      isLight(context) ? Colors.amberAccent : Colors.pinkAccent,
-                  splashColor: Colors.grey,
-                ),
-              ),
-            ),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: AnimatedPadding(
-                padding: EdgeInsets.only(
-                    right: width * 0.2,
-                    // Checks if keyboard is open or not
-                    bottom: MediaQuery.of(context).viewInsets.bottom != 0
-                        ? 10
-                        : height * 0.2),
-                duration: Duration(microseconds: 200),
-                curve: ElasticInOutCurve(),
-                child: MaterialButton(
-                  elevation: 8,
-                  highlightElevation: 10,
-                  child: Icon(
-                    Icons.arrow_forward,
-                    color: Colors.white,
-                    size: 28.0,
-                  ),
-                  color: isLight(context) ? Color(0xff3655B5) : Colors.black,
-                  padding: EdgeInsets.all(18.0),
-                  onPressed: () {},
-                  splashColor: Colors.blueGrey.withOpacity(0.4),
-                  shape: CircleBorder(),
-                ),
-              ),
-            ),
-          ],
-        ),
+          ),
+          Align(
+            alignment: Alignment.topLeft,
+            child: IconButton(icon: Icon(Icons.stars,)
+              , onPressed: () {
+                ThemeData theme = themeChanger.getThemeData;
+                if (theme == lightTheme) {
+                  themeChanger.setThemeData(darkTheme);
+                }
+
+                else
+                  themeChanger.setThemeData(lightTheme);
+              },),
+          ),
+        ],
       ),
     );
   }
