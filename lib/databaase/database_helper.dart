@@ -2,8 +2,10 @@
 import 'dart:convert';
 
 import 'package:path/path.dart';
-import 'package:social_app/model/scream_response.dart';
-import 'package:social_app/model/all_screams.dart';
+import 'package:social_app/entitiy/screams_entiry.dart';
+import 'package:social_app/model/scream.dart';
+import 'package:social_app/response/single_scream_response.dart';
+import 'package:social_app/utils/data_mapper.dart';
 import 'package:sqflite/sqflite.dart';
 
 
@@ -14,6 +16,7 @@ class DatabaseHelper{
   static final DatabaseHelper db = DatabaseHelper._();
   Database _database;
 
+  final DataMapper _dataMapper = DataMapper();
 
   Future<Database> get database async {
     if(_database != null) return _database;
@@ -35,7 +38,9 @@ class DatabaseHelper{
       likeCount INTEGER NOT NULL,
       unlikeCount INTEGER NOT NULL,
       imageUrl TEXT NOT NULL,
-      commentCount INTEGER NOT NULL
+      commentCount INTEGER NOT NULL,
+      isLiked INTEGER NOT NULL,
+      isDisliked INTEGER NOT NULL  
       )'''
       );
 
@@ -55,9 +60,9 @@ class DatabaseHelper{
     });
  }
 
-  addScreams(ScreamsResponse screamsResponse) async {
+  addScreams(ScreamsEntity screamsEntity) async {
     final db = await database;
-    var raw = await db.insert("screams", screamsResponse.toJson(),
+    var raw = await db.insert("screams", screamsEntity.toJson(),
         conflictAlgorithm: ConflictAlgorithm.replace
     );
     return raw;
@@ -78,12 +83,13 @@ class DatabaseHelper{
   //   return raw;
   // }
 
-  Future<List<ScreamsResponse>> getAllScreams() async{
+  Future<List<Scream>> getAllScreams() async{
     final db = await database;
     String sql = " SELECT *  FROM screams";
     var response = await db.rawQuery(sql);
-    List<ScreamsResponse> list = response.map((e) => ScreamsResponse.fromJson(e)).toList();
-    return list;
+    List<ScreamsEntity> list = response.map((e) => ScreamsEntity.fromJson(e)).toList();
+    List<Scream> screams= list.map((e) => _dataMapper.mapModelTOEntity(e)).toList();
+    return screams;
   }
 
   // Future<ScreamsResponse> getScreamById(String screamId) async{
@@ -93,9 +99,5 @@ class DatabaseHelper{
   //   return ScreamsResponse(response);
   //
   // }
-
-
-
-
 
 }

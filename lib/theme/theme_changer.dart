@@ -2,6 +2,8 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:social_app/theme/theme.dart';
 
 class ThemeChanger extends ChangeNotifier{
 
@@ -12,6 +14,7 @@ class ThemeChanger extends ChangeNotifier{
 
   setThemeData(ThemeData value){
     themeData = value;
+
     notifyListeners();
   }
 

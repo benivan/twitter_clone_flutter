@@ -1,11 +1,15 @@
+// To parse this JSON data, do
+//
+//     final screamsEntity = screamsEntityFromJson(jsonString);
+
 import 'dart:convert';
 
-List<ScreamsResponse> screamsResponseFromJson(String str) => List<ScreamsResponse>.from(json.decode(str).map((x) => ScreamsResponse.fromJson(x)));
+List<ScreamsEntity> screamsEntityFromJson(String str) => List<ScreamsEntity>.from(json.decode(str).map((x) => ScreamsEntity.fromJson(x)));
 
-String screamsResponseToJson(List<ScreamsResponse> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String screamsEntityToJson(List<ScreamsEntity> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class ScreamsResponse {
-  ScreamsResponse({
+class ScreamsEntity {
+  ScreamsEntity({
     this.screamId,
     this.body,
     this.userHandle,
@@ -14,6 +18,8 @@ class ScreamsResponse {
     this.unlikeCount,
     this.imageUrl,
     this.commentCount,
+    this.isLiked,
+    this.isDisliked,
   });
 
   String screamId;
@@ -24,8 +30,10 @@ class ScreamsResponse {
   int unlikeCount;
   String imageUrl;
   int commentCount;
+  int isLiked;
+  int isDisliked;
 
-  factory ScreamsResponse.fromJson(Map<String, dynamic> json) => ScreamsResponse(
+  factory ScreamsEntity.fromJson(Map<String, dynamic> json) => ScreamsEntity(
     screamId: json["screamId"],
     body: json["body"],
     userHandle: json["userHandle"],
@@ -34,6 +42,8 @@ class ScreamsResponse {
     unlikeCount: json["unlikeCount"],
     imageUrl: json["imageUrl"],
     commentCount: json["commentCount"],
+    isLiked: json["isLiked"],
+    isDisliked: json["isDisliked"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -45,5 +55,8 @@ class ScreamsResponse {
     "unlikeCount": unlikeCount,
     "imageUrl": imageUrl,
     "commentCount": commentCount,
+    "isLiked": isLiked,
+    "isDisliked": isDisliked,
   };
+
 }

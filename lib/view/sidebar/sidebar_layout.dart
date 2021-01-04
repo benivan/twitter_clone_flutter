@@ -1,36 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:social_app/app_constants.dart';
 import 'package:social_app/theme/theme.dart';
 import 'package:social_app/theme/theme_changer.dart';
 import 'package:social_app/view/Home/allScreamsBuilder.dart';
 import 'package:social_app/view/login/LoginPageView.dart';
 import 'package:social_app/view/profile/user_profile.dart';
-import 'package:social_app/view/sidebar/SideBar.dart';
 
 import '../../constant.dart';
 import 'menu_item.dart';
 
 class SideBarLayout extends StatelessWidget {
   @override
-
   Widget build(BuildContext context) {
-    ThemeChanger themeChanger = Provider.of<ThemeChanger>(context, listen: true);
+    ThemeChanger themeChanger = Provider.of<ThemeChanger>(context);
+    bool isDarkModeSupported =
+        MediaQuery.of(context).platformBrightness == Brightness.dark;
+    bool isDarkTheme = Theme.of(context).brightness == Brightness.dark;
     return Column(
       children: [
-        SizedBox(height: 100,),
+        SizedBox(
+          height: 100,
+        ),
         ListTile(
           title: Text(
             "Vikash Kumar",
-            style: TextStyle(color: Colors.white,
-                fontSize: 30,
-                fontWeight: FontWeight.w800),
+            style: TextStyle(
+                color: Colors.white, fontSize: 30, fontWeight: FontWeight.w800),
           ),
           subtitle: Text(
             "itsmevikash09@gmail.com",
-            style: TextStyle(
-                color: Colors.white60
-            ),
+            style: TextStyle(color: Colors.white60),
           ),
           leading: CircleAvatar(
             radius: 30,
@@ -46,12 +47,19 @@ class SideBarLayout extends StatelessWidget {
           indent: 32,
           endIndent: 32,
         ),
-        MenuItems(iconData: Icons.home, title: "Home",),
+        MenuItems(
+          iconData: Icons.home,
+          title: "Home",
+        ),
         InkWell(
-            onTap: (){
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyUserProfile()));
-              },
-            child: MenuItems(iconData: Icons.person, title: "My Account",)),
+            onTap: () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => MyUserProfile()));
+            },
+            child: MenuItems(
+              iconData: Icons.person,
+              title: "My Account",
+            )),
         Divider(
           height: 50,
           thickness: .5,
@@ -59,16 +67,22 @@ class SideBarLayout extends StatelessWidget {
           indent: 32,
           endIndent: 32,
         ),
-        MenuItems(iconData: Icons.settings, title: "Settings",),
+        MenuItems(
+          iconData: Icons.settings,
+          title: "Settings",
+        ),
         InkWell(
-          onTap:(){
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => AuthPageView()));
+          onTap: () {
+            Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => AuthPageView()));
             SharedPreferences.getInstance().then((sharedPreferences) {
               sharedPreferences.clear();
             });
-          } ,
+          },
           child: MenuItems(
-            iconData: Icons.exit_to_app, title: "Logout",),
+            iconData: Icons.exit_to_app,
+            title: "Logout",
+          ),
         ),
         Divider(
           height: 50,
@@ -77,31 +91,29 @@ class SideBarLayout extends StatelessWidget {
           indent: 32,
           endIndent: 32,
         ),
-        Row(
-          children: [
-            IconButton(icon: Icon(Icons.stars,
-              color: isLight(context) ? Colors.black : Colors
-                  .white,)
-              , onPressed: () {
-                ThemeData theme = themeChanger.getThemeData;
-                if (theme == lightTheme) {
-                  themeChanger.setThemeData(darkTheme);
-                }
-
-                else
-                  themeChanger.setThemeData(lightTheme);
-              },),
-            Text(isLight(context)? "Dark" : "Light",
+        FlatButton.icon(
+            onPressed: () {
+              if (isDarkTheme) {
+                themeChanger.setThemeData(lightTheme);
+              } else {
+                themeChanger.setThemeData(darkTheme);
+              }
+              SharedPreferences.getInstance().then((val) {
+                val.setBool(isDarkThemeEnabled, !val.getBool(isDarkThemeEnabled));
+              });
+            },
+            icon: Icon(
+              Icons.stars,
+              color: isLight(context) ? Colors.black : Colors.white,
+            ),
+            label: Text(
+              isLight(context) ? "Light" : "Dark",
               style: TextStyle(
                 fontWeight: FontWeight.w300,
                 fontSize: 26,
                 color: Colors.white,
               ),
-            )
-          ],
-        ),
-
-
+            ))
       ],
     );
   }

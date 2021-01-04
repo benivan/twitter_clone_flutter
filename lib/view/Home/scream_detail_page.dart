@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:social_app/model/scream_response.dart';
 import 'package:social_app/repository/repository.dart';
+import 'package:social_app/response/all_scream_response.dart';
+import 'package:social_app/response/single_scream_response.dart';
 import 'package:social_app/theme/theme.dart';
 
 class ScreamDetailPage extends StatelessWidget {
@@ -12,10 +13,10 @@ class ScreamDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: FutureBuilder<ScreamResponse>(
+      body: FutureBuilder<SingleScreamResponse>(
           future: Repository().fetchScreamById(screamId: screamId),
           builder:
-              (BuildContext context, AsyncSnapshot<ScreamResponse> snapshot) {
+              (BuildContext context, AsyncSnapshot<SingleScreamResponse> snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.waiting:
                 return Center(child: CircularProgressIndicator());
@@ -43,7 +44,7 @@ class ScreamDetailPage extends StatelessWidget {
 }
 
 class BuildScream extends StatefulWidget {
-  final ScreamResponse scream;
+  final SingleScreamResponse scream;
 
   const BuildScream({Key key, this.scream}) : super(key: key);
 
