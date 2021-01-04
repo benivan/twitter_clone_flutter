@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_stetho/flutter_stetho.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:social_app/app_constants.dart';
 import 'package:social_app/splash_screen.dart';
 import 'package:social_app/theme/theme.dart';
 import 'package:social_app/theme/theme_changer.dart';
-import 'package:social_app/view/Home/allScreamsBuilder.dart';
-import 'package:social_app/view/login/LoginPageView.dart';
-import 'package:social_app/view/login/login.dart';
 import 'package:provider/provider.dart';
-import 'package:social_app/view/login/register.dart';
-import 'package:social_app/view/sidebar/sidebar_layout.dart';
 
 main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,30 +13,56 @@ main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  bool isDarkThemeEnbale;
+
+
+  @override
+  void initState() {
+    super.initState();
+    openSharePref();
+  }
+
+  openSharePref() {
+    SharedPreferences.getInstance().then((sharedPreferences) {
+      if (sharedPreferences.containsKey(isDarkThemeEnabled)) {
+        isDarkThemeEnbale = sharedPreferences.getBool(isDarkThemeEnabled);
+      } else {
+        isDarkThemeEnbale = false;
+        sharedPreferences.setBool(isDarkThemeEnabled, false);
+      }
+      setState(() {
+
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<ThemeChanger>(
-      create: (_) => ThemeChanger(themeData: lightTheme),
-      child: Home(),
-    );
+
+    return ChangeNotifierProvider(
+        create: (BuildContext context) {
+          return ThemeChanger(
+              themeData: !isDarkThemeEnbale ? lightTheme : darkTheme);
+        },
+        child:
+            isDarkThemeEnbale == null ? Center(child: LoadingWidget()) : Home());
   }
 }
 
-class Home extends StatefulWidget {
-  @override
-  _HomeState createState() => _HomeState();
-}
 
-class _HomeState extends State<Home> {
+class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    ThemeChanger themeChanger =
-        Provider.of<ThemeChanger>(context, listen: true);
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: Provider.of<ThemeChanger>(context, listen: true).getThemeData,
-        home: SplashScreen()
-    );
+        darkTheme: darkTheme,
+        home: SplashScreen());
   }
 }
