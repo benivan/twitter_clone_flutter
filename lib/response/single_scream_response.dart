@@ -1,11 +1,6 @@
-import 'dart:convert';
 
-ScreamResponse screamResponseFromJson(String str) => ScreamResponse.fromJson(json.decode(str));
-
-String screamResponseToJson(ScreamResponse data) => json.encode(data.toJson());
-
-class ScreamResponse {
-  ScreamResponse({
+class SingleScreamResponse {
+  SingleScreamResponse({
     this.commentCount,
     this.userHandle,
     this.likeCount,
@@ -27,7 +22,7 @@ class ScreamResponse {
   String screamId;
   List<Comment> comments;
 
-  factory ScreamResponse.fromJson(Map<String, dynamic> json) => ScreamResponse(
+  factory SingleScreamResponse.fromJson(Map<String, dynamic> json) => SingleScreamResponse(
     commentCount: json["commentCount"],
     userHandle: json["userHandle"],
     likeCount: json["likeCount"],

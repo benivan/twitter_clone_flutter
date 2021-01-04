@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -6,26 +8,33 @@ import 'package:http_interceptor/http_interceptor.dart';
 import 'package:social_app/Interceptors/social_interceptor.dart';
 import 'package:social_app/constant.dart';
 import 'package:social_app/databaase/database_helper.dart';
+import 'package:social_app/entitiy/screams_entiry.dart';
+import 'package:social_app/model/scream.dart';
 import 'dart:convert' as json;
 
-import 'package:social_app/model/scream_response.dart';
-import 'package:social_app/model/all_screams.dart';
-import 'package:social_app/model/user_details.dart';
+import 'file:///C:/Users/itsme/AndroidStudioProjects/social_app/lib/response/user_details_response.dart';
+import 'package:social_app/response/all_scream_response.dart';
+import 'package:social_app/response/single_scream_response.dart';
+import 'package:social_app/utils/data_mapper.dart';
+import 'package:social_app/utils/network_mapper.dart';
+import 'package:social_app/view/Home/allScreamsBuilder.dart';
 
 class Repository {
-
   DatabaseHelper dbHelper = DatabaseHelper.db;
+  final NetworkMapper _networkMapper = NetworkMapper();
+  final DataMapper _dataMapper = DataMapper();
 
-  Future<ScreamResponse> getScreamByIdFromNetwork(String screamId) async {
+  Future<SingleScreamResponse> getScreamByIdFromNetwork(String screamId) async {
     try {
       var response = await http.get('$backendUrl/scream/$screamId');
       if (response.statusCode == 200) {
         var jsonResponse = json.jsonDecode(response.body);
-        ScreamResponse sr = ScreamResponse.fromJson(jsonResponse);
-        for(var comment in sr.comments){
+        SingleScreamResponse sr = SingleScreamResponse.fromJson(jsonResponse);
+
+        for (var comment in sr.comments) {
           dbHelper.addComments(comment);
         }
-        return ScreamResponse.fromJson(jsonResponse);
+        return SingleScreamResponse.fromJson(jsonResponse);
       } else {
         throw Exception(response.statusCode);
       }
@@ -34,57 +43,52 @@ class Repository {
     }
   }
 
-  Future<UserDetailsResponse> getUserDetails() async{
-    var htp =
-    HttpWithInterceptor.build(interceptors: [SocialInterceptor()]);
-    try{
+  Future<UserDetailsResponse> getUserDetails() async {
+    var htp = HttpWithInterceptor.build(interceptors: [SocialInterceptor()]);
+    try {
       var response = await htp.get('$backendUrl/user');
-      if(response.statusCode == 200){
+      if (response.statusCode == 200) {
         var jsonResponse = json.jsonDecode(response.body);
-         return  UserDetailsResponse.fromJson(jsonResponse);
-      }else{
+        return UserDetailsResponse.fromJson(jsonResponse);
+      } else {
         throw Exception(response.statusCode);
       }
-    }catch(e){
+    } catch (e) {
       throw e;
     }
   }
 
-  Future <ScreamResponse> fetchScreamById({@required String screamId}) async{
+  Future<SingleScreamResponse> fetchScreamById(
+      {@required String screamId}) async {
     var dbResponse = null;
-    // ScreamResponse dbResponse =
-    //     await dbHelper.getScreamById(screamId);
-    if(dbResponse==null){
+
+    if (dbResponse == null) {
       return getScreamByIdFromNetwork(screamId);
-    }
-    else
-      return dbResponse;
-
-  }
-
-
-
-  Future<List<ScreamsResponse>> fetchAllScreams() async{
-    List<ScreamsResponse> dbResponse =
-       await dbHelper.getAllScreams();
-    if(dbResponse.isEmpty){
-      return getAllScreamsFromNetwork();
-    }
-    else
+    } else
       return dbResponse;
   }
 
+  Future<List<Scream>> fetchAllScreams() {
+    return dbHelper.getAllScreams().then((value) {
+      if (value.isEmpty) {
+        return getAllScreamsFromNetwork();
+      }
+      return value;
+    });
+  }
 
-  Future<List<ScreamsResponse>> getAllScreamsFromNetwork() async {
+  Future<List<Scream>> getAllScreamsFromNetwork() async {
+    var htp = HttpWithInterceptor.build(interceptors: [SocialInterceptor()]);
     try {
-      List<ScreamsResponse> screams = [];
-      var response = await http.get('$backendUrl/screams');
+      List<Scream> screams = [];
+      var response = await htp.get('$backendUrl/screams');
       var jsonResponse = json.jsonDecode(response.body);
-
       for (var item in jsonResponse) {
-        ScreamsResponse sr = ScreamsResponse.fromJson(item);
-        dbHelper.addScreams(sr);
-        screams.add(sr);
+        ScreamResponse sr = ScreamResponse.fromJson(item);
+        ScreamsEntity st = _networkMapper.mapModelTOEntity(sr);
+        Scream scream = _dataMapper.mapModelTOEntity(st);
+        dbHelper.addScreams(st);
+        screams.add(scream);
       }
       return screams;
     } catch (e) {
@@ -92,8 +96,25 @@ class Repository {
     }
   }
 
-
-
+  Future<Scream> postScream(String scream) async {
+    var htp = HttpWithInterceptor.build(interceptors: [SocialInterceptor()]);
+    try {
+      String url = backendUrl + "/scream";
+      String requestBody = jsonEncode(<String, String>{
+        "body": scream,
+      });
+      var headers = {"content-type": "application/json"};
+      var resp = await htp.post(url, headers: headers, body: requestBody);
+      var jsonResponse = json.jsonDecode(resp.body);
+      ScreamResponse sr = ScreamResponse.fromJsons(jsonResponse["resScream"]);
+      ScreamsEntity st = _networkMapper.mapModelTOEntity(sr);
+      Scream s = _dataMapper.mapModelTOEntity(st);
+      dbHelper.addScreams(st);
+      return s;
+    } catch (e) {
+    throw e;
+    }
+  }
 
   Future<Response> login(String username, String password) async {
     Client client = Client();
@@ -104,16 +125,14 @@ class Repository {
     return resp;
   }
 
-  Future<Response> signup(String email, String password, String confirmPassword, String handle) async {
+  Future<Response> signup(String email, String password, String confirmPassword,
+      String handle) async {
     Client client = Client();
     String url = backendUrl + "/signup";
-    String requestBody = '{"email": "$email", "password":"$password","confirmPassword":"$confirmPassword","handle":"$handle"}';
+    String requestBody =
+        '{"email": "$email", "password":"$password","confirmPassword":"$confirmPassword","handle":"$handle"}';
     var headers = {"content-type": "application/json"};
     Response resp = await client.post(url, headers: headers, body: requestBody);
     return resp;
   }
-
-
 }
-
-

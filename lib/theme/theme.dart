@@ -14,6 +14,6 @@ ThemeData lightTheme = ThemeData.from(
     ));
 
 
-bool isLight(context) => Theme.of(context).brightness == Brightness.light ? true : false ;
+bool isLight(context) => Theme.of(context).brightness== Brightness.light ? true : false;
 
 
