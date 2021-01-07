@@ -44,7 +44,8 @@ class _AllScreamsBuilderState extends State<AllScreamsBuilder> {
             case ConnectionState.done:
               if (snapshot.hasError)
                 return Center(child: Text(snapshot.error.toString()));
-              if (snapshot.data.isEmpty || snapshot.data.first.body == "") {
+              if (snapshot.data.isEmpty) {
+                print(snapshot.data);
                 return Center(child: Text('Not Found'));
               }
               return Container(child: ScreamBuild(screams: snapshot.data));
@@ -60,7 +61,7 @@ class _AllScreamsBuilderState extends State<AllScreamsBuilder> {
 
 class ScreamBuild extends StatefulWidget {
   final List<Scream> screams;
-final  Scream screamFromPost;
+  final  Scream screamFromPost;
 
   const ScreamBuild({Key key, this.screams, this.screamFromPost}) : super(key: key);
 
@@ -105,7 +106,7 @@ class _ScreamBuildState extends State<ScreamBuild> {
 
     return Scaffold(
       key: key,
-      backgroundColor: isLight(context) ? Colors.grey.shade200 : Colors.black87,
+      backgroundColor: isLight(context) ? Colors.grey.shade200 : Colors.grey.shade900,
       drawer: Container(
         color: isLight(context) ? Color(0xff6200ee) : Colors.grey.shade900,
         width: screenWidth * .8,
@@ -149,8 +150,8 @@ class _ScreamBuildState extends State<ScreamBuild> {
                           Card(
                             color: isLight(context)
                                 ? Colors.white
-                                : Colors.grey.shade900.withOpacity(0.45),
-                            margin: EdgeInsets.fromLTRB(10, 0, 5, 3),
+                                : Colors.black45.withOpacity(.50),
+                            margin: EdgeInsets.fromLTRB(10, 5, 10, 0),
                             elevation: 18,
                             shadowColor: isLight(context)
                                 ? Colors.white.withOpacity(.5)
@@ -167,22 +168,26 @@ class _ScreamBuildState extends State<ScreamBuild> {
                               title: Padding(
                                 padding: const EdgeInsets.only(bottom: 5),
                                 child: Text(
-                                  scream.userHandle,
+                                  "${scream.userHandle}",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
+                                    color: Colors.cyan
                                   ),
                                 ),
                               ),
                               subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    scream.body,
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        color: isLight(context)
-                                            ? Colors.black87
-                                            : Colors.grey.shade200),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 10),
+                                    child: Text(
+                                      scream.body,
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: isLight(context)
+                                              ? Colors.black87
+                                              : Colors.grey.shade200),
+                                    ),
                                   ),
                                   SizedBox(
                                     height: 5,
@@ -203,14 +208,14 @@ class _ScreamBuildState extends State<ScreamBuild> {
                                                   ? Colors.grey.shade800
                                                   : Colors.deepPurple[200],
                                               onPressed: () {}),
-                                          Text(
-                                            scream.likeCount.toString(),
-                                            style: TextStyle(
-                                              color: isLight(context)
-                                                  ? Colors.grey.shade800
-                                                  : Colors.deepPurple[200],
-                                            ),
-                                          )
+                                          // Text(
+                                          //   scream.likeCount.toString(),
+                                          //   style: TextStyle(
+                                          //     color: isLight(context)
+                                          //         ? Colors.grey.shade800
+                                          //         : Colors.deepPurple[200],
+                                          //   ),
+                                          // )
                                         ],
                                       ),
                                       Column(
@@ -219,7 +224,7 @@ class _ScreamBuildState extends State<ScreamBuild> {
                                               icon: scream.isDisliked
                                                   ? Icon(
                                                       Icons.thumb_down,
-                                                      color: Colors.blue,
+                                                      color: Colors.red,
                                                     )
                                                   : Icon(Icons
                                                       .thumb_down_alt_outlined),
@@ -227,14 +232,14 @@ class _ScreamBuildState extends State<ScreamBuild> {
                                                   ? Colors.grey.shade800
                                                   : Colors.deepPurple.shade200,
                                               onPressed: () {}),
-                                          Text(
-                                            scream.unlikeCount.toString(),
-                                            style: TextStyle(
-                                              color: isLight(context)
-                                                  ? Colors.grey.shade800
-                                                  : Colors.deepPurple.shade200,
-                                            ),
-                                          )
+                                          // Text(
+                                          //   scream.unlikeCount.toString(),
+                                          //   style: TextStyle(
+                                          //     color: isLight(context)
+                                          //         ? Colors.grey.shade800
+                                          //         : Colors.deepPurple.shade200,
+                                          //   ),
+                                          // )
                                         ],
                                       ),
                                       Column(
@@ -246,14 +251,14 @@ class _ScreamBuildState extends State<ScreamBuild> {
                                                   ? Colors.grey.shade800
                                                   : Colors.deepPurple[200],
                                               onPressed: () {}),
-                                          Text(
-                                            scream.commentCount.toString(),
-                                            style: TextStyle(
-                                              color: isLight(context)
-                                                  ? Colors.grey.shade800
-                                                  : Colors.deepPurple[200],
-                                            ),
-                                          )
+                                          // Text(
+                                          //   scream.commentCount.toString(),
+                                          //   style: TextStyle(
+                                          //     color: isLight(context)
+                                          //         ? Colors.grey.shade800
+                                          //         : Colors.deepPurple[200],
+                                          //   ),
+                                          // )
                                         ],
                                       ),
                                     ],

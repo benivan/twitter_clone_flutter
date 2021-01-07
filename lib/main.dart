@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_stetho/flutter_stetho.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:social_app/app_constants.dart';
+import 'package:social_app/cubit/scream_cubit.dart';
+import 'package:social_app/repository/repository.dart';
 import 'package:social_app/splash_screen.dart';
 import 'package:social_app/theme/theme.dart';
 import 'package:social_app/theme/theme_changer.dart';
@@ -21,7 +24,6 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   bool isDarkThemeEnbale;
 
-
   @override
   void initState() {
     super.initState();
@@ -36,25 +38,22 @@ class _MyAppState extends State<MyApp> {
         isDarkThemeEnbale = false;
         sharedPreferences.setBool(isDarkThemeEnabled, false);
       }
-      setState(() {
-
-      });
+      setState(() {});
     });
   }
 
   @override
   Widget build(BuildContext context) {
-
     return ChangeNotifierProvider(
         create: (BuildContext context) {
           return ThemeChanger(
               themeData: !isDarkThemeEnbale ? lightTheme : darkTheme);
         },
-        child:
-            isDarkThemeEnbale == null ? Center(child: LoadingWidget()) : Home());
+        child: isDarkThemeEnbale == null
+            ? Center(child: LoadingWidget())
+            : Home());
   }
 }
-
 
 class Home extends StatelessWidget {
   @override

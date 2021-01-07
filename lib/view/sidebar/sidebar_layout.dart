@@ -25,12 +25,12 @@ class SideBarLayout extends StatelessWidget {
         ),
         ListTile(
           title: Text(
-            "Vikash Kumar",
+            "BEnIVAn",
             style: TextStyle(
                 color: Colors.white, fontSize: 30, fontWeight: FontWeight.w800),
           ),
           subtitle: Text(
-            "itsmevikash09@gmail.com",
+            "someone@something.com",
             style: TextStyle(color: Colors.white60),
           ),
           leading: CircleAvatar(

@@ -3,16 +3,18 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:social_app/cubit/scream_cubit.dart';
 import 'package:social_app/repository/repository.dart';
 import 'package:social_app/theme/theme.dart';
 import 'package:social_app/theme/theme_changer.dart';
 import 'package:social_app/view/Home/allScreamsBuilder.dart';
+import 'package:social_app/view/Home/scream_builder.dart';
 import 'package:social_app/view/login/login.dart';
 import 'package:social_app/view/login/register.dart';
 import 'package:social_app/view/profile/user_profile.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AuthPageView extends StatefulWidget {
-
   @override
   _AuthPageViewState createState() => _AuthPageViewState();
 }
@@ -27,7 +29,6 @@ class _AuthPageViewState extends State<AuthPageView> {
   String _confirmPassword;
   String _handle;
   Repository repository;
-
 
   @override
   void initState() {
@@ -51,64 +52,61 @@ class _AuthPageViewState extends State<AuthPageView> {
 
   onSubmitButtonPressed() {
     if (currentPage == 0) {
-      login( );
+      login();
     } else {
       signUp();
     }
   }
 
   login() {
-    repository.login(_email, _password)
-        .then((value) {
-         if (value.statusCode == 200){
-         var jwtToken = jsonDecode(value.body)['token'];
-         // print(jwtToken);
-           SharedPreferences.getInstance().then((sharedPreferences) {
-             sharedPreferences.setString("Authorization", jwtToken);
-           });
-           Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => AllScreamsBuilder()));
-         }
-         if (value.statusCode == 403){
-           var error = jsonDecode(value.body)["genaral"];
-           key.currentState.showSnackBar(SnackBar(content: Text(error)));
-         }
-         if (value.statusCode == 404){
-           var error = jsonDecode(value.body)["general"];
-           key.currentState.showSnackBar(SnackBar(content: Text(error)));
-         }
-         if (value.statusCode == 400){
-           var emailError = jsonDecode(value.body)["email"];
-           var passwordError = jsonDecode(value.body)["password"];
-           key.currentState.showSnackBar(SnackBar(content:
-               Text((emailError == null ? " " : emailError) + "   "+(passwordError == null ? " " : passwordError )),
-
-           ));
-         }
-
-    }).catchError((err){
-
-      key.currentState.showSnackBar(
-        SnackBar(content: Text(
-          "Something went wrong!"
-        ))
-      );
+    repository.login(_email, _password).then((value) {
+      if (value.statusCode == 200) {
+        var jwtToken = jsonDecode(value.body)['token'];
+        // print(jwtToken);
+        SharedPreferences.getInstance().then((sharedPreferences) {
+          sharedPreferences.setString("Authorization", jwtToken);
+        });
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (context) => BlocProvider(
+                create: (context) => ScreamCubit(Repository()),
+                child: ScreamBuilder())));
+      }
+      if (value.statusCode == 403) {
+        var error = jsonDecode(value.body)["genaral"];
+        key.currentState.showSnackBar(SnackBar(content: Text(error)));
+      }
+      if (value.statusCode == 404) {
+        var error = jsonDecode(value.body)["general"];
+        key.currentState.showSnackBar(SnackBar(content: Text(error)));
+      }
+      if (value.statusCode == 400) {
+        var emailError = jsonDecode(value.body)["email"];
+        var passwordError = jsonDecode(value.body)["password"];
+        key.currentState.showSnackBar(SnackBar(
+          content: Text((emailError == null ? " " : emailError) +
+              "   " +
+              (passwordError == null ? " " : passwordError)),
+        ));
+      }
+    }).catchError((err) {
+      key.currentState
+          .showSnackBar(SnackBar(content: Text("Something went wrong!")));
     });
   }
 
   signUp() {
-   repository.signup(_email, _password, _confirmPassword, _handle)
-       .then((value){
-         if(value.statusCode == 201){
-           print(value.body);
-           Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MyUserProfile()));
-         }
-   }).catchError((err){
-     key.currentState.showSnackBar(
-       SnackBar(content: Text(
-         "Something went wrong!!"
-       ))
-     );
-   });
+    repository
+        .signup(_email, _password, _confirmPassword, _handle)
+        .then((value) {
+      if (value.statusCode == 201) {
+        print(value.body);
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => MyUserProfile()));
+      }
+    }).catchError((err) {
+      key.currentState
+          .showSnackBar(SnackBar(content: Text("Something went wrong!!")));
+    });
   }
 
   @override
@@ -167,22 +165,22 @@ class _AuthPageViewState extends State<AuthPageView> {
                 },
               ),
               Register(
-                passwordChanged: (str){
+                passwordChanged: (str) {
                   setState(() {
                     _password = str;
                   });
                 },
-                confirmPasswordChanged: (str){
+                confirmPasswordChanged: (str) {
                   setState(() {
                     _confirmPassword = str;
                   });
                 },
-                emailTextChanged: (str){
+                emailTextChanged: (str) {
                   setState(() {
                     _email = str;
                   });
                 },
-                handle: (str){
+                handle: (str) {
                   _handle = str;
                 },
               ),
