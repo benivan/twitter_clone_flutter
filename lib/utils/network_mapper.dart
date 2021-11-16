@@ -1,5 +1,4 @@
 import 'package:social_app/entitiy/screams_entiry.dart';
-import 'file:///C:/Users/itsme/AndroidStudioProjects/social_app/lib/response/single_scream_response.dart';
 
 import 'package:social_app/response/all_scream_response.dart';
 import 'package:social_app/utils/mapper.dart';

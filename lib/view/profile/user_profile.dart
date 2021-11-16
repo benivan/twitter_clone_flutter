@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'file:///C:/Users/itsme/AndroidStudioProjects/social_app/lib/response/user_details_response.dart';
 import 'package:social_app/repository/repository.dart';
+import 'package:social_app/response/user_details_response.dart';
 import 'package:social_app/theme/theme.dart';
 
 class MyUserProfile extends StatefulWidget {

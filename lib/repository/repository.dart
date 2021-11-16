@@ -12,9 +12,10 @@ import 'package:social_app/entitiy/screams_entiry.dart';
 import 'package:social_app/model/scream.dart';
 import 'dart:convert' as json;
 
-import 'file:///C:/Users/itsme/AndroidStudioProjects/social_app/lib/response/user_details_response.dart';
+
 import 'package:social_app/response/all_scream_response.dart';
 import 'package:social_app/response/single_scream_response.dart';
+import 'package:social_app/response/user_details_response.dart';
 import 'package:social_app/utils/data_mapper.dart';
 import 'package:social_app/utils/network_mapper.dart';
 import 'package:social_app/view/Home/allScreamsBuilder.dart';
